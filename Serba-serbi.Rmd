@@ -1,0 +1,957 @@
+---
+title: "Serba-serbi R"
+subtitle: "Kodingan R"
+author: '@asepandrif'
+date: "April 26, 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(error = TRUE)
+```
+
+## 1. Pendahuluan
+Pada pelatihan kali ini, kita akan menggunakan RStudio. Namun perlu diingat bahwa syntax yang digunakan di sini dapat pula digunakan pada RGui. Perlu dicatat bahwa core R yang digunakan adalah versi 3.5.3. Mungkin saja ada beberapa perintah yang berbeda dengan versi R lain. 
+
+Pada tulisan ini, bagian yang ada dalam kotak berwarna gelap merupakan syntax atau rangkaian perintah R sedangkan yang berada dalam kotak yang berarwa terang dan isinya dimulai dengan ## merupakan luaran (*output*) syntax yang dieksekusi dan ditampilkan. Cara mengeksekusi syntax di R dapat dilakukan dengan menekan tombol enter pada jendala console, atau ctrl+R, atau ctrl+enter. Penjelasan lebih rinci dapat dilihat pada bagian 1.3.1.Gambar icon Run yaitu:
+
+<center> 
+
+![**Gambar 1. Run**](D:/Pelatihan R/gambar run.JPG)
+
+</center> 
+
+### 1.1. Kutipan R
+
+Cara mengutip R sudah disediakan saat pertama kali membuka R atau RStudio. Namun bila lupa mencatatnya, kita tidak perlu menutup dan membuka aplikasi R. Cukup tuliskan kode:
+
+```{r}
+citation()
+```
+
+Jika menggunakan pustaka tambahan yang belum tersedia dalam inti R, misalnya pustaka **cars**, pustaka **mlr**, dan pustaka-pustaka lain, maka anda dapat melihat cara mengutipnya dengan menggunakan syntax: **citation("nama pustaka")**. Sebagai contoh, jika menggunakan pustaka **stats** maka kita dapat mencari cara mengutipnya dengan:
+
+```{r}
+citation("stats")
+```
+
+### 1.2. *Working Directory* (wd) dan Libpath
+*Working directory* merupakan "wadah" tempat file-file yang akan kita gunakan dan akan kita simpan. Secara *default*, R mengatur *working directory* sesuai dengan pengaturan saat proses instalasi. Namun, kita dapat mengatur ulang *working directory* saat bekerja menggunakan R.
+
+Sedangkan **libpath** merupakan "wadah" tempat pustaka (*packages*) disimpan. Pustaka-pustaka tersebut merupakan program yang digunakan di dalam R. Secara *default*, sudah ada beberapa pustaka saat menginstall R seperti **stats** dan **graphics**. Namun kita dapat menginstall pustaka lain dari dari berbagai sumber seperti CRAN dan Github.
+
+Kita biasanya mengubah-ubah *working directory* tapi tidak dengan libpath. Beberapa syntax yang berhubungan dengan *working directory* dan libpath adalah sebagai berikut.
+
+```{r getwd}
+# Melihat working directory yang aktif
+getwd()
+```
+
+*Working direktory* kita berada pada folder Documents yang berlokasi lengkap di disk C:/Users/aa/Documents. Untuk mengubah *working directory* dapat menggunakan syntax berikut ini.
+
+```{r setwd}
+# Mengatur working directory
+setwd("D:/Pelatihan R")
+```
+
+Sekarang, *working directory* kita sudah berubah tempat. Untuk mengeceknya gunakan lagi syntax getwd().
+
+```{r}
+# Melihat working directory
+getwd()
+```
+
+Pada contoh di atas, tidak terdapat perubahan *working directory* karena komputer yang penulis gunakan mengatur *default working directory* pada tempat yang sama dengan saat dilakukan perubahan. Perubahan letak *working directory* akan sangat tergantung pada komputer yang digunakan.
+
+Pustaka R yang terpasang dalam komputer kita dapat dipanggil secara khusus dengan menggunakan fungsi library(). Namun, sebelum mencoba memanggil pustaka, kita bisa tahu letak pustaka R dapat menjalankan syntax sebagai berikut.
+
+```{r}
+# Mengecek libpath
+.libPaths()
+```
+
+Dalam komputer yang digunakan penulis, pustaka R terletak pada tempat seperti tertulis di atas. Pada komputer yang anda gunakan, sangat mungkin letaknya berbeda.
+
+### 1.3. Hal-hal yang Perlu Diperhatikan
+#### 1.3.1. Menulis dan Mengeksekusi Perintah R
+Perintah R ditulis perbaris. Satu baris ditandai dengan sebuah baris baru atau dengan tanda titik koma (;). Saat menggunakan RStudio atau RGui, penulisan syntax dapat dilakukan pada jendela **console** atau menulisnya di dalam jendela **script**. Jika menulis dalam jendela console, kita cukup menekan enter saat sudah selesai menulis satu baris atau mengakhirnya dengan titik koma. Sedangkan jika menggunakan jendela Script, kita dapat menekan tanda Run atau menekan tombol ctrl+enter (RStudio) atau menekan ctrl+R (RGui). Selain itu, kita juga dapat mengklik icon Run. Gambar icon Run dapat dilihat pada Gambar 1.
+
+#### 1.3.2. R Merupakan Bahasa yang *Case Sensitive*
+Dalam R, antara a dan A dibaca sebagai objek yang berbeda. Aturan seperti itu disebut dengan *case sensitve*.
+
+#### 1.3.3. Perhatikan Penamaan Objek
+Nama objek tidak dapat diawali dengan:
+<br> 1. angka
+<br> 2. underscore
+<br> 3. spasi
+<br> 4. simbol-simbol seperti @, $, * dan lain sebagainya
+
+Sangat dianjurkan untuk tidak menggunakan istilah (huruf atau kata) yang sudah dipesan oleh R (*reserved words*). Penggunaan istilah yang sudah dipesan dapat menimbulkan kerancuan dan besar kemungkinan program tidak akan berjalan sesuai dengan keinginan kita. Beberapa contoh istilah yang sudah dipesan adalah:
+<br> 1. c
+<br> 2. data
+<br> 3. dt
+<br> 4. df
+<br> 5. function
+<br> 6. mean
+
+Pengecekkan nama objek dapat dilakukan dengan cara mengkesekusi nama objek. Contohnya kita akan mengecek apakah c dan mean adalah istilah yang sudah dipesan oleh R.
+
+``` {r}
+c
+mean
+```
+
+Dari hasil diatas kita tahu bahwa c dan data sudah dipesan. Adapun istilah yang belum dipesan akan menampilkan error saat dieksekusi.
+
+``` {r}
+r
+```
+
+Ketik kita mengeksekusi objek r, muncul pemberitahuan error yang menginformasikan bahwa objek r tidak ada.
+
+#### 1.3.4. Fitur Panduan (*Help*)
+Dalam R, kita dapat melihat bantuan dengan menuliskan syntax **help("nama_fungsi")** atau **?nama_fungsi**. Berikut ini contoh saat akan melihat bantuan untuk fungsi mean.
+
+``` {r}
+help(mean)
+?mean
+```
+
+Dalam RStudio kita, akan muncul petunjuk pada jendela Help yang secara *default* terletak di sebelah kiri bawah.
+
+## 2. Menjalankan R
+### 2.1. Menampilkan objek
+Secara umum, R menampilkan luaran di jendela console. Perintah print() menghasilkan luaran sesuai dengan objek yang digunakan. Akan tetapi, untuk menghemat waktu kita dapat menampikan objek tanpa menuliskan fungsi print() secara formal melainkan cukup dengan menulis nama objek lalu kita eksekusi seperti contoh berikut ini.
+
+```{r}
+print("hello, world!")
+"hello, world!"
+1
+```
+
+### 2.2. R sebagai Kalkulator
+Kaerna sifatnya yang interpreter, maka R dapat digunakan seperti kalkulator. Beberapa contoh operator dan fungsi yang dapat digunakan adalah sebagai berikut.
+
+```{r}
+2 + 1
+sin(0)
+exp(1)
+10^-6
+```
+
+### 2.3. Penugasan (*Assignment*)
+Kita dapat menyimpan suatu objek dalam objek lain. Sebagai ilustrasi, misalkan kita akan menyimpan hasil penjumlahan 2 + 1 ke dalam suatu objek bernama a maka kita dapat melakukannya dengan cara:
+
+```{r penugasan}
+a <- 2 + 1
+```
+
+Hasil penjumlahan 2 + 1 sudah dimasukkan ke dalam objek a. Untuk menampilkannya kita dapat menggunakan fungsi print() atau langsung mengeksekusi a.
+
+```{r}
+print(a)
+```
+
+```{r}
+a
+```
+
+Operator "<-" adalah operator khas dan disukai pengguna R. Namun, selain operator "<-", kita juga dapat menggunakan operator lain saat melakukan penugasan. Contoh-contohnya adalah sebagai berikut.
+
+```{r}
+a + 5 -> b
+b
+d = 4 + 5
+d
+e <<- a # digunakan khusus saat pendefinisian objek secara global
+e
+begin <- "mari gunakan R"
+begin
+```
+
+Kita dapat menggunakan operator manapun sesuai dengan kesukaan dan kebutuhan.
+
+### 2.4. Tipe class
+Semua objek di R memiliki class yang dapat diketahui dengan menggunakan fungsi class(). Ada bermacam-macam tipe class dalam R tetapi pada bagian ini hanya disinggung delapan class yaitu logical, numeric, integer, character, factor, ordered, function, dan formula. Selain keenam jenis ini, masih banyak yang lainnya seperti class matrix, data.frame, list, Date, dan lain sebagainya.
+
+#### 2.4.1. Logical
+Tipe class yang dibahas pertama adalah class logical. Kelas ini sangat sederhana hanya terdiri dari dua objek yaitu TRUE dan FALSE. R menyediakan fungsi untuk mengecek kelas suatu objek seperti fungsi class(objek) atau is.jenis_class(objek).
+
+```{r logical}
+TRUE
+FALSE
+class(TRUE)
+is.logical(TRUE) # mengecek apakah objek TRUE merupakan logical
+```
+
+Operasi yang berkaitan dengan logika akan menghasilkan objek TRUE atau FALSE. Misalnya:
+
+```{r}
+2 < 1
+3*5 <= 15
+4/2 == 2 # == adalah operator sama dengan
+5 - 2 != 2 # != adalah operator tidak sama dengan
+```
+
+Selain operator di atas, masih banyak operator lain yang menghasilkan kelas logical seperti ">=", ">", "&", "&&", "|", dan "||".
+
+#### 2.4.2. Numeric
+Objek yang memiliki kelas numeric dapat menyimpan desimal maupun tidak. 
+
+```{r numeric}
+numerik <- 1
+numerik
+class(numerik)
+is.numeric(numerik) # mengecek apakah objek numerik merupakan logical
+2.645
+class(2.645)
+```
+
+#### 2.4.3. Integer
+Sekilas mirip dengan numeric. Namun, seperti namanya, integer hanya terdiri dari bilangan bulat.
+
+```{r integer}
+bulat <- 1:5
+bulat
+class(bulat)
+is.integer(bulat)
+is.numeric(bulat)
+```
+
+Kita dapat merubah bilangan numerik menjadi integer dengan menggunakan fungsi as.integer(). Perubahan yang terjadi menuruti aturan pembulatan bilangan.
+```{r numerik_to_integer}
+as.integer(2.3872)
+as.integer(3.5)
+```
+
+#### 2.4.4. Character
+Character, seperti pada bahasa pemrograman lain, memiliki sifat yang khusus pada R. Objek ber-class karakter dicirikan dengan diapit oleh tanda " " atau ' '. Kedua tanda itu dapat kita gunakan.
+
+```{r}
+karakter <- "R"
+karakter
+class(karakter)
+is.character(karakter)
+is.numeric(karakter)
+```
+
+#### 2.4.5. Factor
+Factor merupakan kelas yang spesial karena dapat ditampilkan seperti character tapi sebenarnya merupakan class yang digunakan untuk mengklasifikasikan sesuatu. Class factor ini seperti tipe skala pengukuran nominal pada skala pengukuran peubah. Hal yang membedakan antara faktor dan character adalah factor memiliki levels. Perhatikan contoh berikut ini.
+
+```{r }
+faktor.1 <- factor(1)
+faktor.1
+faktor.2 <- factor("R")
+faktor.2
+class(faktor.1)
+is.character(faktor.2)
+is.numeric(faktor.1)
+```
+
+Perlu diingat bahwa faktor tidak berclass character.
+
+#### 2.4.6. Ordered Factor
+Ordered factor adalah factor yang memiliki tingkatan. Jika dikaitkan dengan skala pengukuran peubah, ordered factor seperti skala pengukuran ordinal.
+
+```{r}
+urutan <- ordered(1)
+urutan
+class(urutan)
+is.factor(urutan)
+is.numeric(urutan)
+```
+
+#### 2.4.7. Function
+R memiliki objek function (fungsi) tapi kita juga dapat menciptakan fungsi sendiri. Fungsi yang *default* dari R misalnya fungsi untuk menghitung rata-rata: mean(), simpangan baku: sd(), ragam: var(). Kita dapat menciptakan fungsi sendiri dengan menggunakan fungsi function(). Pada bagian lain, akan dijelaskan lebih banyak tentang menciptakan fungsi sendiri.
+
+```{r function}
+fungsi <- function(x) {x^2}
+fungsi
+class(fungsi)
+is.function(fungsi)
+is.function(mean)
+is.function(factor)
+```
+
+#### 2.4.8. Formula
+Class formula ini banyak digunakan saat akan melakukan pemodelan.
+
+```{r formula}
+formula(x~y)
+f = x~y
+class(f)
+```
+
+Tanda tilde (~) pada banyak keyboard terletak di bawah tombol esc. Selain untuk pemodelan, class formula ini juga dapat digunakan saat akan membuat plot berdasarkan kelompok tertentu.
+
+### 2.5. Manipulasi Sederhana Objek R
+#### 2.5.1. Vector
+Suatu vector hanya dapat diisi oleh objek yang memiliki class yang sama.
+
+```{r}
+vektor.1 <- 1 #skalar
+vektor.1
+is.vector(vektor.1)
+```
+
+Kita dapat membuat vektor yang berisi bilangan berurutan atau dengan pola teratur dengan menggunakan operator ":" dan fungsi seq(). Dalam fungsi seq() ada argumen yang harus diisi yaitu from = , to = , by = atau len = . Dalam tulisan ini, argumen-argumen dalam suatu fungsi, akan digunakan tanpa penjelasan lebih rinci.
+
+```{r sekuens}
+vektor.2 <- 1:5 # vektor bilangan bulat secara sekuens
+vektor.2
+vektor.21 <- seq(from = 1, to = 5, by = 1)
+vektor.21
+vektor.22 <- seq(from = 1, to = 10, by = 2)
+vektor.22
+vektor.23 <- seq(from = 1, to = 100, len = 10) # argumen len tidak dapat digunakan bersama dengan argumen by!
+vektor.23
+```
+
+Kita bisa juga membuat vektor dengan cara lain yaitu dengan menggunakan fungsi c() dan rep().
+```{r}
+vektor.3 <- c(1,3,5,7,9,11) # vektor bilangan bulat bilangan tertentu
+vektor.3
+vektor.4 <- rep(1,times = 5) # vektor bilangan bulat bilangan yang diulang
+vektor.4
+vektor.5 <- rep(vektor.2, times = 2) # vektor bilangan bulat bilangan yang diulang
+vektor.5
+vektor.6 <- rep(c(1,2,3), each = 2) # vektor bilangan bulat bilangan yang diulang
+vektor.6
+```
+
+Vektor selain berisi bilangan, dapat pula berisi character.
+```{r vector_character}
+vektor.7 <- c("R", "Statistik") # vektor karakter atau string
+vektor.7
+vektor.8 <- paste("X",c(1:5),sep = "")
+vektor.8
+vektor.9 <- paste(c("A", "B", "C"), c(1:3), sep = " ")
+vektor.9
+vektor.10 <- paste(c("A", "B", "C"), c(1:6), sep = "")
+vektor.10
+```
+
+Lebih jauh, kita juga dapat membuat vektor yang belum diisi oleh objek.
+```{r vector_empty}
+vektor.11 <- vector() # mendaftarkan objek vektor tapi belum terisi
+vektor.11
+is.vector(vektor.11)
+```
+
+Vektor memiliki panjang vektor tapi tidak memiliki dimensi.
+```{r}
+length(vektor.10)
+dim(vektor.10) # mengecek dimensi vektor (vektor tidak berdimensi!)
+```
+
+Vektor juga dapat memuat objek dari class lain seperti Date yang merupakan format untuk data tanggal. Contoh pembuatan vektor tanggal diberikan pada bagian manipulasi data.
+
+#### 2.5.2. Matrix
+Seperti matriks pada matematika, matriks pada R juga memiliki baris dan kolom. Matriks memiliki dimensi sebanyak dua. Kita dapat menghitung panjang baris dengan fungsi nrow() dan panjang kolom dengan fungsi ncol(). Contoh-contoh berbagai cara membuat objek matriks adalah sebagai berikut.
+
+```{r}
+matriks.1 <- matrix(c(1,2,3,4), nrow = 2, ncol = 2)
+matriks.1
+dim(matriks.1)
+matriks.2 <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE)
+matriks.2
+matriks.3 <- vektor.10
+dim(matriks.3) <- c(2,3)
+matriks.3
+matriks.4 <- cbind(vektor.4, vektor.8)
+matriks.4
+matriks.5 <- rbind(vektor.3, vektor.6)
+matriks.5
+matriks.6 <- t(vektor.3)
+matriks.6
+matriks.7 <- as.matrix(vektor.3)
+matriks.7
+matriks.8 <- matrix()
+matriks.8
+is.matrix(matriks.8)
+```
+
+Matriks hanya dapat digunakan untuk menyimpan class data yang sama.
+
+#### 2.5.3. Data Frame
+Data frame memiliki kelebihan dibanding vektor dan matriks yaitu dapat menyimpan data yang memiliki class berbeda dalam setiap kolomnya. Misalkan kita memiliki data numerik yang disimpan pada kolom pertama dan data kategorik pada kolom kedua. Asalkan panjang kedua kolomnya sama, maka dapat disimpan dengan baik dalam bentuk data frame. Meskipun tetap dapat disimpan dengan baik, data dengan panjang kolom berbeda membutuhkan trik khusus agar dapat informatif. Kita akan mencoba berbagai macam bentuk data frame seperti di bawah ini.
+
+```{r}
+df.1 <- data.frame(c(80, 90, 85, 70, 95, 82),
+                   c("B", "A", "A", "C", "A", "B"))
+df.1
+dim(df.1)
+```
+
+Bila kita tidak memberikan nama secara spesifik untuk data frame, maka akan diberi nama secara otomatis sesuai dengan kondisi data yang diinput. Pemberian nama kolom dapat dilakukan dengan mudah seperti contoh di bawah ini.
+
+```{r}
+df.2 <- data.frame(X = c(80, 90, 85, 70, 95, 82),
+                   Y = c("B", "A", "A", "C", "A", "B"))
+df.2
+```
+
+Kita dapat membuat data frame dari berbagai struktur data lain seperti vektor, matriks, dan lain sebagainya.
+
+```{r}
+df.3 <- data.frame(vektor.3)
+df.3
+df.4 <- data.frame(ganjil = vektor.3)
+df.4
+df.5 <- data.frame(ganjil = vektor.3,
+                   huruf = vektor.10)
+df.5
+df.6 <- cbind(df.2, df.5)
+df.6
+```
+
+Meskipun cbind digunakan dalam matriks, tapi jika kolom yang digabung (*bind*) merupakan data frame, maka hasil cbind akan berupa data frame.
+
+```{r}
+df.7 <- data.frame(X = 92,
+                   Y = "A")
+df.7
+df.8 <- rbind(df.2, df.7)
+df.8
+```
+
+Meskipun bentuk data frame dan matriks memiliki kemiripan, tapi keduanya sangat berbeda. Jika kita memeriksanya dengan fungsi is.matrix() dan is.data.frame(), maka akan diperoleh keterangan bahwa matriks dan data frame berbeda.
+
+```{r}
+is.matrix(df.6)
+is.data.frame(df.6)
+```
+
+#### 2.5.4. Array
+Array dapat mempunyai dimensi yang lebih banyak dari dua. Lebih besar daripada matriks dan data frame. Misalkan kita akan membuat array dari suatu bilangan dengan dimensi 3 yang terdiri dari 3 x 1 data terdalam yang ada pada 2 buah lipatan.
+
+```{r}
+arai.1 <- array(c(1.5, 2.8, 3.62, 3, 5.6, 7.24), c(3,1,2))
+arai.1
+dim(arai.1)
+```
+
+Keterangan dimensi 3,1,2 menunjukkan bahwa data disimpan pada suatu struktur dua dimensi dengan baris sebanyak 3 dan kolom sebanyak 1 yang masing-masing ada pada bagian 1 dan 2. Kita dapat membuat berbagai variasi arrah seperti berikut ini.
+
+```{r}
+arai.2 <- array(matriks.6)
+arai.2
+arai.3 <- array(matriks.6, c(1,2,3))
+arai.3
+arai.4 <- array(df.5, c(1,2,3))
+arai.4
+arai.5 <- NULL
+arai.5
+```
+
+Array banyak digunakan dalam pembuatan peta. Pada tulisan ini, array tidak terlalu banyak dijelaskan.
+
+#### 2.5.5. List
+Berbagai macam struktur dan kelas data data disimpan dalam list. Inilah yang membuat list sering digunakan untuk menyimpan luaran suatu fungsi.
+
+```{r}
+list.1 <- list(c("Januari", "Februari", "Maret"))
+list.1
+list.2 <- list(bulan = c("Januari", "Februari", "Maret"))
+list.2
+list.3 <- list(bulan = c("Januari", "Februari", "Maret"),
+               hari = c(31, 28, 31))
+list.3
+list.4 <- list(list.3,
+               fungsi = fungsi)
+list.4
+```
+
+## 2.6. Operasi Aritmatika
+Dalam R dapat dilakukan berbagai macam operasi aritmatika sederhana sampai yang rumit. Berbagai contoh operasi aritmatika dalam R disajikan di bawah ini.
+
+### 2.6.1. Penjumlahan dan pengurangan pada vektor
+```{r}
+2 + 4
+c(1,2,3) - c(2,6,3)
+10 - 11
+```
+
+### 2.6.2. Perkalian dan pembagian pada vektor
+```{r}
+vektor.2 * 2
+2^4
+10 / 5
+vektor.5 / 2
+5 %% 2 # modulo
+5 %/% 2
+```
+
+### 2.6.3. Pembulatan desimal
+```{r}
+round(2.4)
+round(3.5)
+round(2.5)
+floor(2.6)
+ceiling(2.4)
+```
+
+### 2.6.4. Penjumlahan matriks
+```{r}
+matriks.1 + matriks.2
+matriks.2 - matriks.1
+matriks.1 %*% matriks.2
+matriks.1 * matriks.2 # perkalian antar unsur
+```
+
+## 3. Input Data
+### 3.1. Internal
+```{r}
+# Data yang sudah ada dalam R
+data(iris)
+head(iris) # beberapa data terawal
+tail(iris) # beberapa data terakhir
+```
+
+```{r}
+# Melakukan input dengan berbagai tipe struktur objek
+tb <- c(165, 172, 166, 168)
+tb
+jk <- data.frame(nama = c("Dhini", "Nanda", "Mika", "Herianti", "Asep"),
+                jk = c(0, 1, 0, 0, 1))
+```
+
+Kita juga dapat memanfaatkan fungsi scan. Caranya adalah dengan menggunakan fungsi scan() dan menuliskan di console nilai-nilai yang diinput. Proses input diakhiri dengan enter dua kali.
+<br> pindai.vektor <- scan()
+<br> 1: 6
+<br> 2: 7
+<br> 3: 7
+<br> 4:
+<br> Read 3 items
+<br> pindai.vektor
+<br> [1] 6 7 8
+
+Teknik-teknik lebih rinci disajikan pada saat presentasi.
+
+### 3.2. Eksternal
+```{r read.csv}
+cs <- read.csv("D:/Pelatihan R/carbon stock.csv")
+head(cs)
+```
+
+Kita juga dapat menggunakan menu bar. Teknik-teknik lebih rinci disajikan pada saat presentasi.
+
+## 4. Manipulasi Data
+### 4.1. Vektor
+
+```{r}
+# Mengakses unsur vektor
+vek.1 = 11:15
+vek.1
+vek.1[1]
+vek.1[1:3]
+vek.1[c(1,2,5)]
+vek.1[-c(1,2)]
+vek.1[6] <- 10
+vek.1[9] <- 11
+vek.2 <- c("a", "b", "c", "d")
+vek.2[c(1,3)]
+vek.2[7] <- "e"
+vek.2
+vek.1 < 13
+vek.1[vek.1 < 13]
+vek.3 <- vek.1[vek.1 < 13]
+vek.3
+
+# Mengecek na
+is.na(vek.3)
+!is.na(vek.3)
+
+vek.4 <- vek.3[!is.na(vek.3)]
+vek.4
+
+# Menggunakan fungsi subset
+vek.5 <- subset(vek.3, subset = vek.3 < 13 & !is.na(vek.3))
+vek.5
+
+# Mengakses vektor string atau character
+vek.string.1 <- "R untuk statistik"
+vek.string.1
+vek.string.2 <- substr(vek.string.1, start = 1, stop = 1)
+vek.string.2
+vek.string.3 <- substr(vek.string.1, start = 1, stop = 7)
+vek.string.3
+vek.string.4 <- substr(vek.string.1, start = 3, stop = 1000)
+vek.string.4
+
+# Vektor tanggal
+x <- c("1jan1960", "2jan1960", "31mar1960", "30jul1960")
+x
+class(x)
+z <- as.Date(x, format = "%d%b%Y")
+z
+class(z)
+dates.char <- c("02/27/92", "02/27/92", "01/14/92", "02/28/92", "02/01/92")
+dates
+class(dates.char)
+dates <- as.Date(dates, "%m/%d/%y")
+
+# Mengurutkan vektor
+order(vek.1, decreasing = TRUE)
+vek.1.turun <- vek.1[order(vek.1, decreasing = TRUE)]
+vek.1.turun
+vek.1.turun.juga <- sort(vek.1, decreasing = TRUE, na.last = TRUE) # hanya berlaku untuk vektor
+vek.1.turun.juga
+vek.1.naik <- vek.1[order(vek.1, decreasing = FALSE)]
+vek.1.naik
+vek.1.naik.juga.1 <- vek.1[order(vek.1)]
+vek.1.naik.juga.1
+vek.1.naik.juga.2 <- sort(vek.1, na.last = TRUE)
+vek.1.naik.juga.2
+vek.1.naik.juga.3 <- sort(vek.1, na.last = FALSE)
+vek.1.naik.juga.3
+vek.1.naik.tanpa.na <- sort(vek.1)
+vek.1.naik.tanpa.na
+```
+
+### 4.2. Data Frame
+```{r}
+# Mengakses data frame
+cs.1 <- cs[1,]
+cs.1
+
+# melihat nama variabel
+names(cs.1)
+
+cs.root <- cs[,3]
+cs.root
+cs.root.juga <- cs[,"root"]
+cs.root.juga
+cs.2 <- cs[c(1:5),c(1:3)]
+cs.2
+cs.3 <- cs[c(1:3,6),c(1,3,4)]
+cs.3
+cs.mono <- cs[cs$plot.site == "mono",]
+cs.mono
+
+# Menggunakan fungsi subset
+cs.mono.juga <- subset(cs, subset = plot.site == "mono")
+cs.mono.juga
+cs.4 <- subset(cs, subset = plot.site == "mono", select = c("plot.site", "root", "litter"))
+cs.4
+cs.4$ket.root <- ifelse(cs.4$root > 10, "Tinggi", "Rendah")
+head(cs.4)
+cs.5 <- cs.4
+cs.5$ket.root <- ifelse(cs.5$root > 12, "Tinggi",
+                        ifelse(cs.5$root <= 12 & cs.5$root > 10, "Sedang","Rendah"))
+head(cs.5)
+
+# Mengurutkan data frame berdasarkan 1 variabel
+cs.urut.1 <- cs[order(cs$total),]
+head(cs.urut.1)
+cs.urut.2 <- cs[order(cs$root, cs$necromass, decreasing = c(T,F)),]
+head(cs.urut.2)
+
+# Mengurutkan data frame berdasarkan lebih dari 1 variabel
+df.X <- data.frame(Faktor.1 = rep(rep(c(1:3), each = 3), times = 2),
+                   Faktor.2 = rep(rep(c(1:3),times = 3), times = 2),
+                   r = rep(c(1,2), each = 9))
+df.X
+df.X[order(df.X$Faktor.1, df.X$Faktor.2, decreasing = c(T,F)),]
+
+# Memberi nama variabel
+colnames(df.X) <- c("Dosis", "Waktu", "Ulangan")
+df.X
+
+df.X.Dosis.2 <- subset(df.X, Dosis == 2)
+df.X.Dosis.2
+rownames(df.X.Dosis.2) <- 1:6
+df.X.Dosis.2
+  
+# Melakukan merge data frame
+nilai.1 = data.frame(nama = c("Andri", "Ofi", "Amel", "Dewa", "Sam","Juli"),
+                     ujian.1 = c(80, 75, 82, 65, 72, 95))
+nilai.1
+nilai.2 = data.frame(nama = c("Ofi", "Amel", "Andri", "Dewa", "Sam"),
+                     ujian.2 = c(77, 90, 85, 80, 92))
+nilai.2
+nilai.irisan = merge(nilai.1, nilai.2)
+nilai.irisan
+nilai.gabungan.1 = merge(nilai.1, nilai.2, all = TRUE)
+nilai.gabungan.1
+nilai.gabungan.2 = merge(nilai.1, nilai.2, all = TRUE, sort = FALSE)
+nilai.gabungan.2
+```
+
+### 4.3. Matrix
+```{r}
+mat.1 <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = T)
+mat.1
+mat.2 <- matrix(c(11:16), nrow = 2, ncol = 3, byrow = F)
+mat.2
+mat.3 <- rbind(mat.1, mat.2)
+mat.3
+mat.4 <- cbind(mat.1, mat.2)
+mat.4
+mat.5 <- mat.1 %*% mat.2
+mat.5
+
+# determinan matriks
+determinan <- det(mat.1)
+determinan
+
+# inverse matriks
+inverse <- solve(mat.1)
+inverse
+
+# eigen value dan eigen vektor
+eigen(mat.1)
+
+vektor.diag <- diag(mat.4)
+vektor.diag
+unsur <- mat.4[2:4]
+unsur
+vektor.baris <- mat.4[1,]
+vektor.baris
+mat.6 <- mat.4[1:2, c(1,3)]
+mat.6
+```
+
+### 4.4. List
+```{r}
+list.41 <- list(vektor = vektor.1,
+               data.frame = cs.mono,
+               matriks = mat.1)
+list.41
+ls(list.41)
+list.41[[1]]
+list.41$vektor
+list.41$data.frame
+```
+
+## 6. Looping dan Control Flow
+### 6.1 Looping
+#### 6.1.1 For
+```{r}
+for (i in 1:10){
+  print(paste("ulangan ke-", i, sep = ""))
+}
+```
+
+#### 6.1.2 While
+```{r}
+j = 1
+while (j < 11) {
+  print(paste("ulangan ke-", j, sep = ""))
+  j = j + 1
+}
+```
+
+### 6.2 Control Flow
+```{r}
+m <- 10 
+n <- 10
+ctr <- 0
+mymat <- matrix(0,m,n)
+for(i in 1:m) {
+  for(j in 1:n) {   
+    if(i==j) { 
+      break;
+    } else {
+      # you assign the values only when i<>j
+      mymat[i,j] = i*j
+      ctr=ctr+1
+    }
+  }
+  print(i*j) 
+}
+```
+
+### 6.3 Menyimpan Hasil Looping
+```{r}
+for(i in c(2,4,6,8,10)){
+  x <- i
+  x.kuadrat <- i^2
+  hasil.1 <- data.frame(x,x.kuadrat)
+}
+hasil.1
+
+hasil.2 <- data.frame()
+for(i in c(2,4,6,8,10)){
+  x <- i
+  x.kuadrat <- i^2
+  df.x <- data.frame(x,x.kuadrat)
+  hasil.2 <- rbind(hasil.2, df.x)
+}
+hasil.2
+```
+
+```{r}
+### 6.4 Membuat fungsi sendiri
+fungsiGanjil <- function(x) {
+  index = x %% 2 == 1
+  hasil = x[index]
+  return(hasil)
+}
+fungsiGanjil(1:10)
+
+fungsiGanjilGenap <- function(x) {
+  index.ganjil = x %% 2 == 1
+  hasil.ganjil = x[index.ganjil]
+  index.genap = x %% 2 ==0
+  hasil.genap = x[index.genap]
+  return(list(ganjil = hasil.ganjil, genap = hasil.genap))
+}
+
+fungsiGanjilGenapPilihan <- function(x,pilihan) {
+  if (pilihan == "ganjil") {
+    return(hasil.ganjil = x[x %% 2 == 1])
+  } else if (pilihan == "genap") {
+    return(hasil.genap = x[x %% 2 ==0])
+  }
+}
+fungsiGanjilGenapPilihan(1:10,"ganjil")
+fungsiGanjilGenapPilihan(1:10,"genap")
+
+fungsiKorelasiPearson <- function(x,y) {
+  if(is.numeric(x) == FALSE) {
+    stop("Variabel X harus numeric")
+    } else if(is.numeric(y) == FALSE) {
+      stop("Variabel Y harus numeric")
+    } else {
+        var.x <- var(x)
+        var.y <- var(y)
+        cov.xy <- cov(x,y)
+        r <- cov.xy/(sqrt(var.x*var.y))
+        return(r)
+    }
+}
+```
+
+## 7. Statistik Deskriptif
+### 7.1. Statistik
+```{r}
+data(mtcars)
+head(mtcars)
+
+# Ringkasan data termasuk statistik lima serangkai
+summary(mtcars)
+
+# Menghitung jumlah dari masing-masing baris (jumlah dapat diganti dengan fungsi apapun)
+apply(mtcars, MARGIN = 1, FUN = sum)
+rowSums(mtcars)
+
+# Menghitung rata-rata dari masing-masing kolom (rata-rata dapat diganti dengan fungsi apapun)
+apply(mtcars, MARGIN = 2, FUN = mean)
+colMeans(mtcars)
+
+# Menghitung rata-rata agregat (rata-rata dapat diganti dengan fungsi apapun)
+aggregate(list(rataan.mpg = mtcars$mpg), list(carb = mtcars$carb), mean)
+aggregate(list(rataan.mpg = mtcars$mpg),
+          list(carb = mtcars$carb, gear = mtcars$gear), mean)
+aggregate(list(rataan.mpg = mtcars$mpg, rataan.wt = mtcars$wt), 
+          list(carb = mtcars$carb, gear = mtcars$gear), mean)
+
+# Menyimpan hasil menjadi suatu objek
+rataan.mpg <- aggregate(list(rataan.mpg = mtcars$mpg), list(carb = mtcars$carb), mean)
+rataan.mpg
+simbaku.mpg <- aggregate(list(simbaku.mpg = mtcars$mpg), list(carb = mtcars$carb), sd)
+simbaku.mpg
+rataan_simbaku.1 <- cbind(rataan.mpg, simbaku.mpg)
+rataan_simbaku.2 <- merge(rataan.mpg, simbaku.mpg)
+```
+
+### 7.2. Visualisasi
+```{r}
+data(mtcars)
+head(mtcars)
+plot(mtcars$mpg, mtcars$disp)
+plot(mtcars$mpg, mtcars$disp,
+     xlab = "mpg", ylab = "disp",
+     main = "Plot mpg & disp",
+     pch = 16,
+     col = "blue")
+text(x = 30, y = 350,
+     paste("r =", round(cor(mtcars$mpg, mtcars$disp),3)))
+
+boxplot(mtcars$wt, main = "Boxplot wt")
+boxplot(mtcars[,c("disp","hp")],
+        main = "Boxplot disp & hp",
+        col = c("aquamarine", "green"),
+        ylim = c(0,600))
+legend(x = 2.1, y = 590,
+       legend = c("disp","hp"),
+       fill = c("aquamarine", "green"),
+       border = "black",
+       box.lty = 0,
+       title = "Keterangan",
+       cex = 0.9)
+
+boxplot(hp~carb, data = mtcars,
+        xlab = "carb",
+        ylab = "hp",
+        main = "Sebaran hp berdasarkan carb")
+
+# membuat beberapa plot dalam satu bingkai
+attach(mtcars) # menguraikan variabel
+layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE), 
+       widths=c(2,1))
+hist(wt)
+hist(mpg)
+hist(disp)
+detach(mtcars) # kebalikan dari attach
+
+par(fig=c(0,0.8,0,0.7))
+plot(mtcars$wt, mtcars$mpg, xlab="Car Weight",
+     ylab="Miles Per Gallon")
+par(fig=c(0,0.8,0.4,1),new=TRUE)
+boxplot(mtcars$mpg, horizontal = TRUE, axes=FALSE)
+par(fig=c(0.7,1,0,0.7),new=TRUE)
+boxplot(mtcars$mpg, axes=FALSE)
+mtext("Enhanced Scatterplot", side=3, outer=TRUE, line=-3, cex = 1.2)
+layout(1) # mengembalikan pengaturan default jumlah baris dan kolom layout plot
+```
+
+## 8. Pustaka (Packages) R
+###  8.1. Menginstall Pustaka
+Ada banyak pustaka yang dapat diunduh secara gratis di CRAN atau Github. Hanya saja, di sini kita akan mencoba 3 pustaka.
+```{r}
+install.packages("psych")
+install.packages("summarytools")
+install.packages("ggplot2")
+```
+
+### 8.2. Menggunakan Pustaka
+Setelah pustaka diinstall, maka dapat dipanggil.
+#### 8.2.1. Memanggil Pustaka
+```{r}
+library(psych)
+library(summarytools)
+library(ggplot2)
+```
+
+Data yang digunakan adalah data internal yaitu data iris
+```{r}
+# Memanggil data iris
+data(iris)
+str(iris) # struktur data iris
+head(iris)
+```
+
+#### 8.2.2. Menggunakan Pustaka
+```{r}
+# pustaka psych
+citation("psych") # cara mengutip pustaka psych
+describe(iris)
+describeBy(iris, group = iris$Species)
+
+# pustaka summarytools
+citation("summarytools")
+view(dfSummary(iris))
+
+# pustaka ggplot2
+library(ggplot2)
+head(iris)
+ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) + 
+  geom_boxplot() +
+  labs(title = "Sepal Length",
+       subtitle = "Berdasarkan Species")
+```
